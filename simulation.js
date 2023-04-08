@@ -26,23 +26,17 @@ class Wavefront{
       circle.graphics.setStrokeStyle(stroke).beginStroke(coloring).drawCircle(0,0, radius);
       circle.x = x;
       circle.y = y;
-      //circle.shadow = new createjs.Shadow(shadow, 0, 0, 20);
-      circle.filters = [
-        //new createjs.ColorFilter(0, 0, 0, 1, 255, 0, 0),
-        new createjs.BlurFilter(0, 0, 1)
-      ];
-      circle.cache(- radius, -radius, root.nominalBounds.width, root.nominalBounds.height);
+      circle.shadow = new createjs.Shadow(shadow, 0, 0, 5);
       root.addChild(circle);
-      //circle.filters = [filter];
+      
       
       stage.addEventListener("tick", enlarge);
       function enlarge(){
         radius += 2;
         circle.graphics.clear();
         circle.graphics.setStrokeStyle(stroke).beginStroke(coloring).drawCircle(0,0, radius);
-        circle.cache(- radius, -radius, root.nominalBounds.width, root.nominalBounds.height);
+        root.cache(0, 0, root.nominalBounds.width, root.nominalBounds.height);
         if (radius > containerDiagonal){
-          //circle.graphics.clear();
           root.removeChild(circle);
           stage.removeEventListener("tick", enlarge);
         }

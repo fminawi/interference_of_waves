@@ -118,7 +118,7 @@ if (reversed == null) { reversed = false; }
 
 	// Layer_1
 	this.shape = new cjs.Shape();
-	this.shape.graphics.f().s("#CCCCCC").ss(1,1,1,3,true).p("EgnpgweMBPUAAAMAAABg9MhPUAAAg");
+	this.shape.graphics.f().s("#999999").ss(2,1,1).p("EgnpgweMBPUAAAMAAABg9MhPUAAAg");
 	this.shape.setTransform(253.85,310.275);
 
 	this.shape_1 = new cjs.Shape();
@@ -388,7 +388,7 @@ if (reversed == null) { reversed = false; }
 	this._renderFirstFrame();
 
 }).prototype = p = new lib.AnMovieClip();
-p.nominalBounds = new cjs.Rectangle(640,360,636.9000000000001,343.6);
+p.nominalBounds = new cjs.Rectangle(640,360,636.9000000000001,344.6);
 // library properties:
 lib.properties = {
 	id: 'DEF5A0A10E5D014494482595F5BD06E1',
