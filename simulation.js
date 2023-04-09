@@ -3,7 +3,6 @@ class Simulation {
     this.root = _root;
     this.stage = _stage;
     this.container = this.root.container;
-    this.waveSpace = this.container.waveSpace;
     this.header = this.root.header;
     this.pz_logo = this.root.pz_logo;
     this.playstop = this.root.playstop;
@@ -15,7 +14,10 @@ class Simulation {
   init(){
     var stage = this.stage;
     var waveSpace = this.waveSpace;
+    var playstop = this.playstop;
     var playBtn = this.playBtn;
+    var stopBtn = this.stopBtn;
+    var waveSpace = this.container;
     
     const centerX = waveSpace.nominalBounds.width / 2 - waveSpace.nominalBounds.width / 2;
     const centerY = waveSpace.nominalBounds.height / 2;
