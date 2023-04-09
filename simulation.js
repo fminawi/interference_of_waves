@@ -82,9 +82,9 @@ class Simulation {
     const centerY = waveSpace.nominalBounds.height / 2;
     const wavelength = 100; // wavelength of the wave
     const distance = 500; // distance between the two point sources
-    const frequency = 1; // frequency of the wave
+    const frequency = 10; // frequency of the wave
     const amplitude = 30; // amplitude of the wave
-    const speed = 1; // speed of the wave
+    const speed = 10; // speed of the wave
     
     function draw() {
       stage.removeAllChildren();
@@ -95,8 +95,8 @@ class Simulation {
       g.beginFill('blue').drawCircle(centerX + distance / 2, centerY, 5);
     
       // loop through each pixel and calculate the intensity of the wave
-      for (let x = 0; x < waveSpace.nominalBounds.width; x++) {
-        for (let y = 0; y < waveSpace.nominalBounds.height; y++) {
+      for (let x = 0; x < waveSpace.nominalBounds.width; x+=20) {
+        for (let y = 0; y < waveSpace.nominalBounds.height; y+=20) {
           const distance1 = Math.sqrt(Math.pow(x - (centerX - distance / 2), 2) + Math.pow(y - centerY, 2));
           const distance2 = Math.sqrt(Math.pow(x - (centerX + distance / 2), 2) + Math.pow(y - centerY, 2));
           const phase1 = 2 * Math.PI * (distance1 / wavelength) - 2 * Math.PI * frequency * createjs.Ticker.getTime() * speed;
@@ -105,14 +105,14 @@ class Simulation {
           const intensity2 = amplitude * Math.cos(phase2);
           const interference = intensity1 + intensity2;
           const color = interference > 0 ? `rgb(${interference},0,0)` : `rgb(0,0,${-interference})`;
-          g.beginFill(color).drawRect(x, y, 1, 1);
+          g.beginFill(color).drawRect(x, y, 20, 20);
         }
       }
     
       const bg = new createjs.Shape(g);
       bg.cache(0, 0, waveSpace.nominalBounds.width, waveSpace.nominalBounds.height);
       stage.addChild(bg);
-      //stage.update();
+      stage.update();
     }
     
     stage.addEventListener("tick", draw);
