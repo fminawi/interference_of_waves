@@ -87,32 +87,44 @@ class Simulation {
     const speed = 10; // speed of the wave
     
     function draw() {
-      stage.removeAllChildren();
-      const g = new createjs.Graphics();
-    
-      // draw the two point sources
-      g.beginFill('red').drawCircle(centerX - distance / 2, centerY, 5);
-      g.beginFill('blue').drawCircle(centerX + distance / 2, centerY, 5);
-    
-      // loop through each pixel and calculate the intensity of the wave
-      for (let x = 0; x < waveSpace.nominalBounds.width; x+=20) {
-        for (let y = 0; y < waveSpace.nominalBounds.height; y+=20) {
-          const distance1 = Math.sqrt(Math.pow(x - (centerX - distance / 2), 2) + Math.pow(y - centerY, 2));
-          const distance2 = Math.sqrt(Math.pow(x - (centerX + distance / 2), 2) + Math.pow(y - centerY, 2));
-          const phase1 = 2 * Math.PI * (distance1 / wavelength) - 2 * Math.PI * frequency * createjs.Ticker.getTime() * speed;
-          const phase2 = 2 * Math.PI * (distance2 / wavelength) - 2 * Math.PI * frequency * createjs.Ticker.getTime() * speed;
-          const intensity1 = amplitude * Math.cos(phase1);
-          const intensity2 = amplitude * Math.cos(phase2);
-          const interference = intensity1 + intensity2;
-          const color = interference > 0 ? `rgb(${interference},0,0)` : `rgb(0,0,${-interference})`;
-          g.beginFill(color).drawRect(x, y, 20, 20);
+      i++;
+      if (i % 40 === 0){
+        
+        stage.removeAllChildren();
+        const g = new createjs.Graphics();
+      
+        // draw the two point sources
+        g.beginFill('red').drawCircle(centerX - distance / 2, centerY, i);
+        g.beginFill('blue').drawCircle(centerX + distance / 2, centerY, i);
+      
+        // loop through each pixel and calculate the intensity of the wave
+        for (let x = 0; x < waveSpace.nominalBounds.width; x+=20) {
+          for (let y = 0; y < waveSpace.nominalBounds.height; y+=20) {
+            const distance1 = Math.sqrt(Math.pow(x - (centerX - distance / 2), 2) + Math.pow(y - centerY, 2));
+            const distance2 = Math.sqrt(Math.pow(x - (centerX + distance / 2), 2) + Math.pow(y - centerY, 2));
+            const phase1 = 2 * Math.PI * (distance1 / wavelength) - 2 * Math.PI * frequency * createjs.Ticker.getTime() * speed;
+            const phase2 = 2 * Math.PI * (distance2 / wavelength) - 2 * Math.PI * frequency * createjs.Ticker.getTime() * speed;
+            const intensity1 = amplitude * Math.cos(phase1);
+            const intensity2 = amplitude * Math.cos(phase2);
+            const interference = intensity1 + intensity2;
+            const color = interference > 0 ? `rgb(${interference},0,0)` : `rgb(0,0,${-interference})`;
+            g.beginFill(color).drawRect(x, y, 20, 20);
+          }
         }
+      
+        const bg = new createjs.Shape(g);
+        bg.cache(0, 0, waveSpace.nominalBounds.width, waveSpace.nominalBounds.height);
+        stage.addChild(bg);
+        //stage.update();
+
+
+
+
+
+
+        i = 0;
       }
-    
-      const bg = new createjs.Shape(g);
-      bg.cache(0, 0, waveSpace.nominalBounds.width, waveSpace.nominalBounds.height);
-      stage.addChild(bg);
-      stage.update();
+      
     }
     
     stage.addEventListener("tick", draw);
