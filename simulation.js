@@ -15,6 +15,7 @@ class Simulation {
   init(){
     var stage = this.stage;
     var waveSpace = this.waveSpace;
+    var playBtn = this.playBtn;
     
     const centerX = waveSpace.nominalBounds.width / 2 - waveSpace.nominalBounds.width / 2;
     const centerY = waveSpace.nominalBounds.height / 2;
@@ -24,6 +25,7 @@ class Simulation {
     const amplitude = 30;
     const speed = 0.15;
     var res = 10;
+    var playFlag = false;
     
     function draw() {
         if (playFlag){
@@ -54,6 +56,14 @@ class Simulation {
       }
     }
     createjs.Ticker.addEventListener('tick', draw);
-    
+
+    playBtn.visible = true;
+    stopBtn.visible = false;
+
+    playstop.addEventListener("click", function(){
+      playFlag = !playFlag;
+      playBtn.visible = !playBtn.visible;
+      stopBtn.visible = !stopBtn.visible;
+    });
   }
 }
