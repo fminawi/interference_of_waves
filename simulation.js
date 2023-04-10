@@ -21,18 +21,18 @@ class Simulation {
     
     const centerX = waveSpace.nominalBounds.width / 2 - waveSpace.nominalBounds.width / 2;
     const centerY = waveSpace.nominalBounds.height / 2;
-    const wavelength = 50;
+    const wavelength = 80;
     const distance = 300;
     const frequency = 2;
     const amplitude = 30;
     const speed = 0.1;
     var res = 10;
     var playFlag = true;
-    const blurFilter = new createjs.BlurFilter(12, 12, 1);
+    
     function draw() {
       if (playFlag){
         waveSpace.removeAllChildren();
-        var g = new createjs.Graphics();
+        const g = new createjs.Graphics();
         
         g.beginFill('green').drawCircle(centerX + 10, centerY - distance / 2, 5);
         g.beginFill('green').drawCircle(centerX + 10, centerY + distance / 2, 5);
@@ -53,7 +53,7 @@ class Simulation {
           }
         }
         const bg = new createjs.Shape(g);
-        //const blurFilter = new createjs.BlurFilter(12, 12, 1);
+        const blurFilter = new createjs.BlurFilter(12, 12, 1);
         bg.filters = [blurFilter];
         bg.cache(0, 0, waveSpace.nominalBounds.width, waveSpace.nominalBounds.height);
         waveSpace.addChild(bg);
