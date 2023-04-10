@@ -27,7 +27,7 @@ class Simulation {
     const amplitude = 30;
     const speed = 0.1;
     var res = 10;
-    var playFlag = true;
+    var playFlag = false;
     
     function draw() {
       if (playFlag){
@@ -70,6 +70,7 @@ class Simulation {
 
     playstop.addEventListener("click", function(){
       playFlag = !playFlag;
+      draw();
       playBtn.visible = !playBtn.visible;
       stopBtn.visible = !stopBtn.visible;
     });
