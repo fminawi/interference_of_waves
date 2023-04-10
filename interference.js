@@ -27,62 +27,62 @@ lib.ssMetadata = [
 
 
 
-(lib.CachedBmp_20 = function() {
+(lib.CachedBmp_9 = function() {
 	this.initialize(ss["interference_atlas_1"]);
 	this.gotoAndStop(0);
 }).prototype = p = new cjs.Sprite();
 
 
 
-(lib.CachedBmp_19 = function() {
+(lib.CachedBmp_8 = function() {
 	this.initialize(ss["interference_atlas_1"]);
 	this.gotoAndStop(1);
 }).prototype = p = new cjs.Sprite();
 
 
 
-(lib.CachedBmp_18 = function() {
+(lib.CachedBmp_7 = function() {
 	this.initialize(ss["interference_atlas_1"]);
 	this.gotoAndStop(2);
 }).prototype = p = new cjs.Sprite();
 
 
 
-(lib.CachedBmp_17 = function() {
+(lib.CachedBmp_6 = function() {
 	this.initialize(ss["interference_atlas_1"]);
 	this.gotoAndStop(3);
 }).prototype = p = new cjs.Sprite();
 
 
 
-(lib.CachedBmp_16 = function() {
+(lib.CachedBmp_5 = function() {
 	this.initialize(ss["interference_atlas_1"]);
 	this.gotoAndStop(4);
 }).prototype = p = new cjs.Sprite();
 
 
 
-(lib.CachedBmp_15 = function() {
+(lib.CachedBmp_4 = function() {
 	this.initialize(ss["interference_atlas_1"]);
 	this.gotoAndStop(5);
 }).prototype = p = new cjs.Sprite();
 
 
 
-(lib.CachedBmp_14 = function() {
-	this.initialize(img.CachedBmp_14);
+(lib.CachedBmp_3 = function() {
+	this.initialize(img.CachedBmp_3);
 }).prototype = p = new cjs.Bitmap();
 p.nominalBounds = new cjs.Rectangle(0,0,3439,924);
 
 
-(lib.CachedBmp_13 = function() {
+(lib.CachedBmp_2 = function() {
 	this.initialize(ss["interference_atlas_1"]);
 	this.gotoAndStop(6);
 }).prototype = p = new cjs.Sprite();
 
 
 
-(lib.CachedBmp_12 = function() {
+(lib.CachedBmp_1 = function() {
 	this.initialize(ss["interference_atlas_1"]);
 	this.gotoAndStop(7);
 }).prototype = p = new cjs.Sprite();
@@ -123,7 +123,7 @@ if (reversed == null) { reversed = false; }
 	mask.setTransform(100,100);
 
 	// Layer_3
-	this.instance = new lib.CachedBmp_20();
+	this.instance = new lib.CachedBmp_9();
 	this.instance.setTransform(0,0,0.5,0.5);
 
 	var maskedShapeInstanceList = [this.instance];
@@ -157,7 +157,7 @@ if (reversed == null) { reversed = false; }
 	mask.setTransform(100,100);
 
 	// Layer_3
-	this.instance = new lib.CachedBmp_19();
+	this.instance = new lib.CachedBmp_8();
 	this.instance.setTransform(0,0,0.5,0.5);
 
 	var maskedShapeInstanceList = [this.instance];
@@ -185,19 +185,19 @@ if (reversed == null) { reversed = false; }
 	cjs.MovieClip.apply(this,[props]);
 
 	// Layer_1
-	this.instance = new lib.CachedBmp_18();
+	this.instance = new lib.CachedBmp_7();
 	this.instance.setTransform(363.2,-17.1,0.5,0.5);
 
-	this.instance_1 = new lib.CachedBmp_17();
+	this.instance_1 = new lib.CachedBmp_6();
 	this.instance_1.setTransform(416.45,42.3,0.5,0.5);
 
-	this.instance_2 = new lib.CachedBmp_16();
+	this.instance_2 = new lib.CachedBmp_5();
 	this.instance_2.setTransform(-163.1,-50,0.5,0.5);
 
-	this.instance_3 = new lib.CachedBmp_15();
+	this.instance_3 = new lib.CachedBmp_4();
 	this.instance_3.setTransform(622.95,-50,0.5,0.5);
 
-	this.instance_4 = new lib.CachedBmp_14();
+	this.instance_4 = new lib.CachedBmp_3();
 	this.instance_4.setTransform(-859.8,-230.95,0.5,0.5);
 
 	this.timeline.addTween(cjs.Tween.get({}).to({state:[{t:this.instance_4},{t:this.instance_3},{t:this.instance_2},{t:this.instance_1},{t:this.instance}]}).wait(1));
@@ -304,10 +304,10 @@ if (reversed == null) { reversed = false; }
 	cjs.MovieClip.apply(this,[props]);
 
 	// Layer_1
-	this.instance = new lib.CachedBmp_13();
+	this.instance = new lib.CachedBmp_2();
 	this.instance.setTransform(2.6,69.6,0.5,0.5);
 
-	this.instance_1 = new lib.CachedBmp_12();
+	this.instance_1 = new lib.CachedBmp_1();
 	this.instance_1.setTransform(0,0,0.5,0.5);
 
 	this.pz_logo = new lib.pz_logo();
@@ -358,11 +358,11 @@ lib.properties = {
 	id: 'DEF5A0A10E5D014494482595F5BD06E1',
 	width: 1000,
 	height: 600,
-	fps: 40,
+	fps: 30,
 	color: "#FFFFFF",
 	opacity: 1.00,
 	manifest: [
-		{src:"images/CachedBmp_14.png", id:"CachedBmp_14"},
+		{src:"images/CachedBmp_3.png", id:"CachedBmp_3"},
 		{src:"images/interference_atlas_1.png", id:"interference_atlas_1"}
 	],
 	preloads: []

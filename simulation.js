@@ -12,7 +12,6 @@ class Simulation {
   }
 
   init(){
-    var stage = this.stage;
     var waveSpace = this.container;
     var playstop = this.playstop;
     var playBtn = this.playBtn;
@@ -34,8 +33,8 @@ class Simulation {
         waveSpace.removeAllChildren();
         const g = new createjs.Graphics();
         
-        g.beginFill('green').drawCircle(centerX + 10, centerY - distance / 2, 5);
-        g.beginFill('green').drawCircle(centerX + 10, centerY + distance / 2, 5);
+        //g.beginFill('green').drawCircle(centerX + 10, centerY - distance / 2, 5);
+        //g.beginFill('green').drawCircle(centerX + 10, centerY + distance / 2, 5);
       
         for (let x = 0; x < waveSpace.nominalBounds.width; x += res) {
           for (let y = 0; y < waveSpace.nominalBounds.height; y += res) {
@@ -48,22 +47,18 @@ class Simulation {
             const intensity2 = amplitude * Math.cos(phase2);
             const interference = - 200 + intensity1 + intensity2;
             const color = interference > 0 ? `rgb(${interference},0,0)` : `rgb(0,0,${-interference})`;
-            g.beginFill(color).drawRect( x, y, res, res);
+            g.beginFill(color).drawRect(x, y, res, res);
             
           }
         }
         const bg = new createjs.Shape(g);
-        const blurFilter = new createjs.BlurFilter(12, 12, 1);
+        const blurFilter = new createjs.BlurFilter(11, 11);
         bg.filters = [blurFilter];
         bg.cache(0, 0, waveSpace.nominalBounds.width, waveSpace.nominalBounds.height);
         waveSpace.addChild(bg);
         requestAnimationFrame(draw);
-        //stage.update();
       }
     }
-    requestAnimationFrame(draw);
-    
-    //createjs.Ticker.addEventListener('tick', draw);
 
     playBtn.visible = true;
     stopBtn.visible = false;
