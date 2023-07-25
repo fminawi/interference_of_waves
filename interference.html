@@ -64,7 +64,7 @@ function handleComplete(evt,comp) {
 		stage.addChild(exportRoot);
 		createjs.Ticker.framerate = lib.properties.fps;
 		createjs.Ticker.addEventListener("tick", stage);
-		if (simulation === undefined) {simulation = new Simulation(exportRoot, stage);}
+		if (simulation === undefined) {simulation = new Simulation(exportRoot, stage, lib);}
 	}	    
 	//Code to support hidpi screens and responsive scaling.
 	AdobeAn.makeResponsive(true,'both',true,1,[canvas,preloaderDiv,anim_container,dom_overlay_container]);	
