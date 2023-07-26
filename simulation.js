@@ -51,6 +51,9 @@ class Simulation {
         speed = 0.1,
         res = 10,
         playFlag = false,
+        t = 0,
+        t0 = 0,
+        dt = 0,
         width = waveSpace.nominalBounds.width - 10,
         height = waveSpace.nominalBounds.height - 10;
 
@@ -67,7 +70,7 @@ class Simulation {
         const g = new createjs.Graphics();      
         for (let x = centerX; x < width; x += res) {
           for (let y = 0; y < height; y += res) {
-            var t = createjs.Ticker.getTime() / 1000;
+            t = createjs.Ticker.getTime() / 1000 - dt;
             const distance1 = Math.sqrt(Math.pow(y - (centerY - distance / 2), 2) + Math.pow(x - centerX, 2));
             const distance2 = Math.sqrt(Math.pow(y - (centerY + distance / 2), 2) + Math.pow(x - centerX, 2));
             const phase1 = 2 * Math.PI * (distance1 / wavelength) - 2 * Math.PI * frequency * t * speed;
@@ -77,7 +80,6 @@ class Simulation {
             const interference = - 200 + intensity1 + intensity2;
             const color = interference > 0 ? `rgb(${interference},0,0)` : `rgb(0,0,${-interference})`;
             g.beginFill(color).drawRect(x, y, res, res);
-            
           }
         }
         const bg = new createjs.Shape(g);
@@ -100,6 +102,11 @@ class Simulation {
 
     playstop.addEventListener("click", function(){
       playFlag = !playFlag;
+      if (!playFlag){
+        t0 = t;
+      } else if (playFlag){
+        dt = createjs.Ticker.getTime() / 1000 - t0;
+      }
       draw();
       playBtn.visible = !playBtn.visible;
       stopBtn.visible = !stopBtn.visible;
