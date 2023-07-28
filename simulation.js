@@ -12,8 +12,6 @@ class Simulation {
     this.stopBtn = this.playstop.stopBtn;
     this.radBtn1s = this.root.radBtn1s;
     this.radBtn2s = this.root.radBtn2s;
-    this.radBtnHighQ = this.root.radBtnHighQ;
-    this.radBtnLowQ = this.root.radBtnLowQ;
     this.sliderAnimSpeed = this.root.sliderAnimSpeed;
     this.sliderDistance = this.root.sliderDistance;
     this.sliderFreq = this.root.sliderFreq;
@@ -32,8 +30,6 @@ class Simulation {
         waveSpace = this.container,
         radBtn1s = this.radBtn1s,
         radBtn2s = this.radBtn2s,
-        radBtnHighQ = this.radBtnHighQ,
-        radBtnLowQ = this.radBtnLowQ,
         sliderAnimSpeed = this.sliderAnimSpeed,
         sliderDistance = this.sliderDistance,
         sliderFreq = this.sliderFreq,
@@ -51,7 +47,6 @@ class Simulation {
         res = 10,
         playFlag = false,
         twoSourcesFlag = true,
-        lowResFlag = false,
         t = 0,
         t0 = 0,
         dt = 0,
@@ -63,13 +58,16 @@ class Simulation {
     s1.x = s2.x = centerX + 15;
     s1.y = centerY - distance / 2;
     s2.y = centerY + distance / 2;
-    container.addChild(s1,s2);
-    
+    if (twoSourcesFlag){
+      container.addChild(s1, s2);
+    } else {
+      container.addChild(s1);
+    }
+
     function draw() {
       if (playFlag){
         waveSpace.removeAllChildren();
         const g = new createjs.Graphics();  
-        res = 10 + 5 * lowResFlag;
         for (let x = centerX; x < width; x += res) {
           for (let y = 0; y < height; y += res) {
             t = createjs.Ticker.getTime() / 1000 - dt;
@@ -89,7 +87,12 @@ class Simulation {
         bg.filters = [blurFilter];
         bg.cache(0, 0, waveSpace.nominalBounds.width, waveSpace.nominalBounds.height);
         waveSpace.addChild(bg);
-        container.addChild(s1,s2);
+        if (twoSourcesFlag){
+          container.addChild(s1, s2);
+        } else {
+          container.addChild(s1);
+        }
+        
         requestAnimationFrame(draw);
       }
       console.log("distance:   " + distance);
@@ -124,27 +127,14 @@ class Simulation {
       this.dot.visible = true;
       radBtn2s.dot.visible = !this.dot.visible;
       twoSourcesFlag = false;
+      container.removeChild(s2);
     });
 
     radBtn2s.on("click", function(){
       this.dot.visible = true;
       radBtn1s.dot.visible = !this.dot.visible;
       twoSourcesFlag = true;
-    });
-
-    radBtnHighQ.dot.visible = true;
-    radBtnLowQ.dot.visible = false;
-
-    radBtnHighQ.on("click", function(){
-      this.dot.visible = true;
-      radBtnLowQ.dot.visible = !this.dot.visible;
-      lowResFlag = false;
-    });
-
-    radBtnLowQ.on("click", function(){
-      this.dot.visible = true;
-      radBtnHighQ.dot.visible = !this.dot.visible;
-      lowResFlag = true;
+      container.addChild(s1, s2);
     });
 
     sliderAnimSpeed.on("pressmove", function(){
@@ -167,7 +157,11 @@ class Simulation {
         distance = (pt.x + 75) / 160 * 450;
         s1.y = centerY - distance / 2;
         s2.y = centerY + distance / 2;
-        container.addChild(s1,s2);
+        if (twoSourcesFlag){
+          container.addChild(s1, s2);
+        } else {
+          container.addChild(s1);
+        }
       }
     });
 
