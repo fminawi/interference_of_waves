@@ -16,9 +16,7 @@ class Simulation {
     this.radBtnLowQ = this.root.radBtnLowQ;
     this.sliderAnimSpeed = this.root.sliderAnimSpeed;
     this.sliderDistance = this.root.sliderDistance;
-    //this.sliderLambda = this.root.sliderLambda;
     this.sliderFreq = this.root.sliderFreq;
-    //this.sliderSpeed = this.root.sliderSpeed;
     this.sliderAmp = this.root.sliderAmp;
     this.init();
   }
@@ -38,9 +36,7 @@ class Simulation {
         radBtnLowQ = this.radBtnLowQ,
         sliderAnimSpeed = this.sliderAnimSpeed,
         sliderDistance = this.sliderDistance,
-        //sliderLambda = this.sliderLambda,
         sliderFreq = this.sliderFreq,
-        //sliderSpeed = this.sliderSpeed,
         sliderAmp = this.sliderAmp;
     
     const centerX = waveSpace.nominalBounds.width / 2 - waveSpace.nominalBounds.width / 2;
@@ -49,7 +45,7 @@ class Simulation {
     var distance = 225,
         speed = 440,
         frequency = 8,
-        amplitude = 50,
+        amplitude = 30,
         wavelength = 4.4,
         animationSpeed = 0.15,
         res = 10,
@@ -183,22 +179,13 @@ class Simulation {
         frequency = (pt.x + 75) / 160 * 16 + 2;
       }
     });
-/*
-    sliderSpeed.on("pressmove", function(){
-      var pt = this.globalToLocal(stage.mouseX, stage.mouseY);
-      var slidingBound = (this.path.nominalBounds.width - this.handle.nominalBounds.width) / 2;
-      if (pt.x > - slidingBound && pt.x < slidingBound){
-        this.handle.x = pt.x;
-        speed = (pt.x + 75) / 160 * 70 + 5;
-      }
-    });
-*/
+
     sliderAmp.on("pressmove", function(){
       var pt = this.globalToLocal(stage.mouseX, stage.mouseY);
       var slidingBound = (this.path.nominalBounds.width - this.handle.nominalBounds.width) / 2;
       if (pt.x > - slidingBound && pt.x < slidingBound){
         this.handle.x = pt.x;
-        amplitude = (pt.x + 75) / 160 * 100 + 5;
+        amplitude = (pt.x + 75) / 160 * 60 + 5;
       }
     });
 
