@@ -14,10 +14,11 @@ class Simulation {
     this.radBtn2s = this.root.radBtn2s;
     this.radBtnHighQ = this.root.radBtnHighQ;
     this.radBtnLowQ = this.root.radBtnLowQ;
+    this.sliderAnimSpeed = this.root.sliderAnimSpeed;
     this.sliderDistance = this.root.sliderDistance;
-    this.sliderLambda = this.root.sliderLambda;
+    //this.sliderLambda = this.root.sliderLambda;
     this.sliderFreq = this.root.sliderFreq;
-    this.sliderSpeed = this.root.sliderSpeed;
+    //this.sliderSpeed = this.root.sliderSpeed;
     this.sliderAmp = this.root.sliderAmp;
     this.init();
   }
@@ -35,22 +36,26 @@ class Simulation {
         radBtn2s = this.radBtn2s,
         radBtnHighQ = this.radBtnHighQ,
         radBtnLowQ = this.radBtnLowQ,
+        sliderAnimSpeed = this.sliderAnimSpeed,
         sliderDistance = this.sliderDistance,
-        sliderLambda = this.sliderLambda,
+        //sliderLambda = this.sliderLambda,
         sliderFreq = this.sliderFreq,
-        sliderSpeed = this.sliderSpeed,
+        //sliderSpeed = this.sliderSpeed,
         sliderAmp = this.sliderAmp;
     
     const centerX = waveSpace.nominalBounds.width / 2 - waveSpace.nominalBounds.width / 2;
     const centerY = waveSpace.nominalBounds.height / 2;
     
-    var wavelength = 80,
-        distance = 300,
-        frequency = 2,
+    var distance = 225,
+        speed = 440,
+        frequency = 8,
         amplitude = 50,
-        speed = 0.1,
+        wavelength = 4.4,
+        animationSpeed = 0.15,
         res = 10,
         playFlag = false,
+        twoSourcesFlag = true,
+        lowResFlag = false,
         t = 0,
         t0 = 0,
         dt = 0,
@@ -67,17 +72,18 @@ class Simulation {
     function draw() {
       if (playFlag){
         waveSpace.removeAllChildren();
-        const g = new createjs.Graphics();      
+        const g = new createjs.Graphics();  
+        res = 10 + 5 * lowResFlag;
         for (let x = centerX; x < width; x += res) {
           for (let y = 0; y < height; y += res) {
             t = createjs.Ticker.getTime() / 1000 - dt;
             const distance1 = Math.sqrt(Math.pow(y - (centerY - distance / 2), 2) + Math.pow(x - centerX, 2));
             const distance2 = Math.sqrt(Math.pow(y - (centerY + distance / 2), 2) + Math.pow(x - centerX, 2));
-            const phase1 = 2 * Math.PI * (distance1 / wavelength) - 2 * Math.PI * frequency * t * speed;
-            const phase2 = 2 * Math.PI * (distance2 / wavelength) - 2 * Math.PI * frequency * t * speed;
+            const phase1 = 2 * Math.PI * (distance1 * frequency / speed) - 2 * Math.PI * frequency * t * animationSpeed;
+            const phase2 = 2 * Math.PI * (distance2 * frequency / speed) - 2 * Math.PI * frequency * t * animationSpeed;
             const intensity1 = amplitude * Math.cos(phase1);
             const intensity2 = amplitude * Math.cos(phase2);
-            const interference = - 200 + intensity1 + intensity2;
+            const interference = - 200 + intensity1 + intensity2 * twoSourcesFlag;
             const color = interference > 0 ? `rgb(${interference},0,0)` : `rgb(0,0,${-interference})`;
             g.beginFill(color).drawRect(x, y, res, res);
           }
@@ -87,14 +93,17 @@ class Simulation {
         bg.filters = [blurFilter];
         bg.cache(0, 0, waveSpace.nominalBounds.width, waveSpace.nominalBounds.height);
         waveSpace.addChild(bg);
-        var s1 = new lib.Source();
-        var s2 = new lib.Source();
-        s1.x = s2.x = centerX + 15;
-        s1.y = centerY - distance / 2;
-        s2.y = centerY + distance / 2;
         container.addChild(s1,s2);
         requestAnimationFrame(draw);
       }
+      console.log("distance:   " + distance);
+      console.log("wavelength: " + wavelength);
+      console.log("frequency:  " + frequency);
+      console.log("speed:      " + speed);
+      console.log("amplitude:  " + amplitude);
+      console.log("anim speed: " + animationSpeed);
+      console.log(" ");
+
     }
 
     playBtn.visible = true;
@@ -111,5 +120,87 @@ class Simulation {
       playBtn.visible = !playBtn.visible;
       stopBtn.visible = !stopBtn.visible;
     });
+
+    radBtn1s.dot.visible = false;
+    radBtn2s.dot.visible = true;
+
+    radBtn1s.on("click", function(){
+      this.dot.visible = true;
+      radBtn2s.dot.visible = !this.dot.visible;
+      twoSourcesFlag = false;
+    });
+
+    radBtn2s.on("click", function(){
+      this.dot.visible = true;
+      radBtn1s.dot.visible = !this.dot.visible;
+      twoSourcesFlag = true;
+    });
+
+    radBtnHighQ.dot.visible = true;
+    radBtnLowQ.dot.visible = false;
+
+    radBtnHighQ.on("click", function(){
+      this.dot.visible = true;
+      radBtnLowQ.dot.visible = !this.dot.visible;
+      lowResFlag = false;
+    });
+
+    radBtnLowQ.on("click", function(){
+      this.dot.visible = true;
+      radBtnHighQ.dot.visible = !this.dot.visible;
+      lowResFlag = true;
+    });
+
+    sliderAnimSpeed.on("pressmove", function(){
+      var pt = this.globalToLocal(stage.mouseX, stage.mouseY);
+      var slidingBound = (this.path.nominalBounds.width - this.handle.nominalBounds.width) / 2;
+      if (pt.x > - slidingBound && pt.x < slidingBound){
+        this.handle.x = pt.x;
+        animationSpeed = (pt.x + 75) / 160 * 0.3 + 0.02;
+      }
+    });
+
+    sliderDistance.on("pressmove", function(){
+      var pt = this.globalToLocal(stage.mouseX, stage.mouseY);
+      var slidingBound = (this.path.nominalBounds.width - this.handle.nominalBounds.width) / 2;
+      if (pt.x > - slidingBound && pt.x < slidingBound){
+        if(!playFlag){
+          waveSpace.removeAllChildren();
+        }
+        this.handle.x = pt.x;
+        distance = (pt.x + 75) / 160 * 450;
+        s1.y = centerY - distance / 2;
+        s2.y = centerY + distance / 2;
+        container.addChild(s1,s2);
+      }
+    });
+
+    sliderFreq.on("pressmove", function(){
+      var pt = this.globalToLocal(stage.mouseX, stage.mouseY);
+      var slidingBound = (this.path.nominalBounds.width - this.handle.nominalBounds.width) / 2;
+      if (pt.x > - slidingBound && pt.x < slidingBound){
+        this.handle.x = pt.x;
+        frequency = (pt.x + 75) / 160 * 16 + 2;
+      }
+    });
+/*
+    sliderSpeed.on("pressmove", function(){
+      var pt = this.globalToLocal(stage.mouseX, stage.mouseY);
+      var slidingBound = (this.path.nominalBounds.width - this.handle.nominalBounds.width) / 2;
+      if (pt.x > - slidingBound && pt.x < slidingBound){
+        this.handle.x = pt.x;
+        speed = (pt.x + 75) / 160 * 70 + 5;
+      }
+    });
+*/
+    sliderAmp.on("pressmove", function(){
+      var pt = this.globalToLocal(stage.mouseX, stage.mouseY);
+      var slidingBound = (this.path.nominalBounds.width - this.handle.nominalBounds.width) / 2;
+      if (pt.x > - slidingBound && pt.x < slidingBound){
+        this.handle.x = pt.x;
+        amplitude = (pt.x + 75) / 160 * 100 + 5;
+      }
+    });
+
   }
 }
