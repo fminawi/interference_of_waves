@@ -42,14 +42,12 @@ class Simulation {
         speed = 440,
         frequency = 8,
         amplitude = 30,
-        wavelength = 0,
+        wavelength = 4.4,
         animationSpeed = 0.15,
-        radius = 0,
-        propagation = 0,
         res = 10,
         playFlag = false,
         twoSourcesFlag = true,
-        t = 1,
+        t = 0,
         t0 = 0,
         dt = 0,
         width = waveSpace.nominalBounds.width - 10,
@@ -65,35 +63,38 @@ class Simulation {
     } else {
       container.addChild(s1);
     }
-    t = createjs.Ticker.getTime() / 1000 - dt;
-        propagation = speed * t;
-        wavelength = speed / frequency;
-    radius = propagation - wavelength / 2;
-    console.log(radius);
-    var frontDiff = new createjs.Shape();
+
     function draw() {
       if (playFlag){
-        //waveSpace.removeAllChildren();
-        t = createjs.Ticker.getTime() / 1000 - dt;
-        propagation = speed * t;
-        wavelength = speed / frequency;
-        frontDiff.graphics.clear();
-        console.log(radius);
-        for (radius = (propagation - wavelength / 2); radius <= (propagation + wavelength /2); radius += 2){
-          if (radius > 0){
-            
-            const phase = 2 * Math.PI * (radius * frequency / speed) - 2 * Math.PI * frequency * t;
-            const intensity = - 200 + amplitude * Math.cos(phase);
-            const color = intensity > 0 ? `rgb(${intensity},0,0)` : `rgb(0,0,${-intensity})`;
-            frontDiff.graphics.setStrokeStyle(2);
-            frontDiff.graphics.beginStroke(color);// or g.graphics.setStrokeStyle(1).beginStroke("#000000");
-            frontDiff.graphics.drawCircle(s1.x, s1.y, radius);
-            waveSpace.addChild(frontDiff);
+        waveSpace.removeAllChildren();
+        const g = new createjs.Graphics();  
+        const propagation = speed * t * animationSpeed;
+        for (let x = centerX; x < width; x += res) {
+          for (let y = 0; y < height; y += res) {
+            t = createjs.Ticker.getTime() / 1000 - dt;
+            const distance1 = Math.sqrt(Math.pow(y - (centerY - distance / 2), 2) + Math.pow(x - centerX, 2));
+            const distance2 = Math.sqrt(Math.pow(y - (centerY + distance / 2), 2) + Math.pow(x - centerX, 2));
+            const phase1 = 2 * Math.PI * (distance1 * frequency / speed) - 2 * Math.PI * frequency * t * animationSpeed;
+            const phase2 = 2 * Math.PI * (distance2 * frequency / speed) - 2 * Math.PI * frequency * t * animationSpeed;
+            const intensity1 = amplitude * Math.cos(phase1);
+            const intensity2 = amplitude * Math.cos(phase2);
+            const interference = - 200 + intensity1 + intensity2 * twoSourcesFlag;
+            const color = interference > 0 ? `rgb(${interference},0,0)` : `rgb(0,0,${-interference})`;
+            wavelength = speed / frequency;
+            if (Math.abs(distance1 - propagation) <= wavelength / 2){
+              g.beginFill(color).drawRect(x, y, res, res);
+            } 
+            else {
+              g.beginFill(-interference).drawRect(x, y, res, res);
+            }
             
           }
         }
-        
-        
+        const bg = new createjs.Shape(g);
+        const blurFilter = new createjs.BlurFilter(11, 11);
+        bg.filters = [blurFilter];
+        bg.cache(0, 0, waveSpace.nominalBounds.width, waveSpace.nominalBounds.height);
+        waveSpace.addChild(bg);
         if (twoSourcesFlag){
           container.addChild(s1, s2);
         } else {
@@ -102,21 +103,14 @@ class Simulation {
         
         requestAnimationFrame(draw);
       }
-      /*
       console.log("distance:   " + distance);
       console.log("wavelength: " + wavelength);
       console.log("frequency:  " + frequency);
       console.log("speed:      " + speed);
       console.log("amplitude:  " + amplitude);
       console.log("anim speed: " + animationSpeed);
-      */
-      if (radius < propagation){
-        console.log("propagation:" + propagation);
-        console.log("radius:     " + radius);
-        console.log("  ");
-      }
-      
-      
+      console.log(" ");
+
     }
 
     playBtn.visible = true;
