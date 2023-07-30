@@ -35,7 +35,7 @@ class Simulation {
         sliderFreq = this.sliderFreq,
         sliderAmp = this.sliderAmp;
     
-    const centerX = waveSpace.nominalBounds.width / 2 - waveSpace.nominalBounds.width / 2;
+    const centerX = 0;
     const centerY = waveSpace.nominalBounds.height / 2;
     
     var distance = 225,
@@ -68,6 +68,7 @@ class Simulation {
       if (playFlag){
         waveSpace.removeAllChildren();
         const g = new createjs.Graphics();  
+        const propagation = speed * t * animationSpeed;
         for (let x = centerX; x < width; x += res) {
           for (let y = 0; y < height; y += res) {
             t = createjs.Ticker.getTime() / 1000 - dt;
@@ -79,7 +80,12 @@ class Simulation {
             const intensity2 = amplitude * Math.cos(phase2);
             const interference = - 200 + intensity1 + intensity2 * twoSourcesFlag;
             const color = interference > 0 ? `rgb(${interference},0,0)` : `rgb(0,0,${-interference})`;
-            g.beginFill(color).drawRect(x, y, res, res);
+            if (Math.abs(distance1) >= Math.abs(propagation)){
+              g.beginFill(interference).drawRect(x, y, res, res);
+            } else {
+              g.beginFill(color).drawRect(x, y, res, res);
+            }
+            
           }
         }
         const bg = new createjs.Shape(g);
